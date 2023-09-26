@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: requirements/nginx
+      args:
+        - CERTS_
+        - CERTS_KEY
+        - WORDPRESS_URL
+    container_name: nginx
+    image: nginx
+    restart: always
+    volumes:
+      - wordpress_volume:/var/www/html/wordpress
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    env_file:
+      - .env
+    networks:
+      - inception_network
+
+  mariadb:
+    build:
+      context: requirements/mariadb
+      args:
+        - WORDPRESS_DB_NAME
+        - WORDPRESS_DB_USER
+        - WORDPRESS_DB_PASSWORD
+      constainer_name: mariadb
+      image: mariadb
+      restart: always
+      volumes:
+        - mariadb_volume:/var/lib/mysql/
+      env_file:
+        - .env
+      networks:
+        - inception_network
+      
+  wordpress:
+    build:
+      context: requirements/wordpress
+      container_name: wordpress
+      image: wordpress
+      restast: always
+      depends_on:
+        - mariadb
+      volumes:
+        - wordpress_volume:/var/www/html/wordpress
+      env_file:
+        - .env
+      networks:
+        - inception_network
+
+volumes:
+  mariadb_volume:
+    external: true
+  wordpress_volume:
+    external: true
+
+networks:
+  inception_network:
+    driver: bridge
+
+  
