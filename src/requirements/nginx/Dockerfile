@@ -6,7 +6,7 @@ ARG WORDPRESS_URL
 
 RUN apt update -y && apt upgrade && apt install -y nginx openssl gettext-base
 
-RUN openssl req -batch -x509 -sha256 -nodes -newkey ras:2048 -day 365 -keyout $CERTS_KEY -out $CERTS_
+RUN openssl req -batch -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout $CERTS_KEY -out $CERTS_
 
 RUN rm -f /etc/nginx/sites-enabled/default
 

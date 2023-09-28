@@ -29,30 +29,30 @@ services:
         - WORDPRESS_DB_NAME
         - WORDPRESS_DB_USER
         - WORDPRESS_DB_PASSWORD
-      constainer_name: mariadb
-      image: mariadb
-      restart: always
-      volumes:
-        - mariadb_volume:/var/lib/mysql/
-      env_file:
-        - .env
-      networks:
-        - inception_network
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    volumes:
+      - mariadb_volume:/var/lib/mysql/
+    env_file:
+      - .env
+    networks:
+      - inception_network
       
   wordpress:
     build:
       context: requirements/wordpress
-      container_name: wordpress
-      image: wordpress
-      restast: always
-      depends_on:
-        - mariadb
-      volumes:
-        - wordpress_volume:/var/www/html/wordpress
-      env_file:
-        - .env
-      networks:
-        - inception_network
+    container_name: wordpress
+    image: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_volume:/var/www/html/wordpress
+    env_file:
+      - .env
+    networks:
+      - inception_network
 
 volumes:
   mariadb_volume:
